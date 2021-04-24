@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^0.4.0
   carousel_pro: ^1.0.0
   cloud_firestore: ^0.13.0+1
   firebase_auth: ^0.15.3+1

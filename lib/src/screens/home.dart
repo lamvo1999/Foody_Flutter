@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_odering/src/helpers/screen_navigation.dart';
+import 'package:food_odering/src/helpers/style.dart';
+import 'package:food_odering/src/providers/auth.dart';
 import 'package:food_odering/src/screens/bag.dart';
-import 'file:///E:/Flutter%20Project/food_odering/lib/src/helpers/style.dart';
 import 'package:food_odering/src/widgets/bottom_navigation_icon.dart';
 import 'package:food_odering/src/widgets/categories.dart';
 import 'package:food_odering/src/widgets/custom_text.dart';
 import 'package:food_odering/src/widgets/featured_product.dart';
 import 'package:food_odering/src/widgets/small_floating_button.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,73 +19,128 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
+      appBar: AppBar(
+        iconTheme:  IconThemeData(color: white),
+        backgroundColor: black,
+        elevation: 0.5,
+        title: CustomText(text: "FoodApp", color: white,),
+        actions: <Widget>[
+          Stack(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: (){
+                  changeScreen(context, ShoppingBag());
+                },
+              ),
+              // Positioned(
+              //   top: 10,
+              //   right: 12,
+              //   child: Container(
+              //     height: 10,
+              //     width: 10,
+              //     decoration: BoxDecoration(
+              //       color: red,
+              //       borderRadius: BorderRadius.circular(20),
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
+          Stack(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.notifications_none),
+                onPressed: (){},
+              ),
+              Positioned(
+                top: 10,
+                right: 12,
+                child: Container(
+                  height: 10,
+                  width: 10,
+                  decoration: BoxDecoration(
+                    color: red,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: black
+                ),
+                  accountName: CustomText(text: authProvider.userModel.name, color: white,),
+                  accountEmail: CustomText(text: authProvider.userModel.email, color: grey,)
+              ),
+              ListTile(
+                onTap: (){},
+                leading: Icon(Icons.home),
+                title: CustomText(text: "Trang Chủ"),
+              ),
+              ListTile(
+                onTap: (){},
+                leading: Icon(Icons.person),
+                title: CustomText(text: "Tài Khoản"),
+              ),
+              ListTile(
+                onTap: (){
+                  changeScreen(context, ShoppingBag());
+                },
+                leading: Icon(Icons.shopping_cart),
+                title: CustomText(text: "Giỏ Hàng"),
+              ),
+            ],
+          ),
+        ),
         backgroundColor: white,
         body: SafeArea(
           child: ListView(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Bạn có muốn ăn gì không?", style: TextStyle(fontSize: 18),),
+              Container(
+                decoration: BoxDecoration(
+                  color: black,
+                  borderRadius: BorderRadius.only(
+                      bottomRight:Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
                   ),
-                  Stack(
-                    children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.notifications_none),
-                          onPressed: (){},
-                          ),
-                      Positioned(
-                        top: 10,
-                        right: 12,
-                        child: Container(
-                          height: 10,
-                          width: 10,
-                          decoration: BoxDecoration(
-                            color: red,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 15),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.search,
+                        color: red,),
+                      title: TextField(
+                        decoration: InputDecoration(
+                            hintText: "Tìm kiếm món ăn và nhà hàng",
+                            border: InputBorder.none
                         ),
                       ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: 5,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: grey,
-                        offset: Offset(1,1),
-                        blurRadius: 4
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    leading: Icon(Icons.search, color: red,),
-                    title: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Tìm kiếm món ăn và nhà hàng",
-                        border: InputBorder.none
-                      ),
+                      trailing: Icon(Icons.filter_list, color: red,),
                     ),
-                    trailing: Icon(Icons.filter_list, color: red,),
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 5,
               ),
 
               Categories(),
+              SizedBox(height: 5,),
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -212,38 +269,6 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-
-      bottomNavigationBar: Container(
-        height: 67,
-        color: white,
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              BottomNavIcon(
-                image: "home.png",
-                name: "Trang Chủ",
-              ),
-              BottomNavIcon(
-                image: "profile.png",
-                name: "Gần Đây",
-              ),
-              BottomNavIcon(
-                onTap: (){
-                  changeScreen(context, ShoppingBag());
-                },
-                image: "shoppbag.png",
-                name: "Giỏ Hàng",
-              ),
-              BottomNavIcon(
-                image: "person.png",
-                name: "Tài Khoản",
-              ),
-            ],
-          ),
-        ),
-      ),
       );
   }
 }
