@@ -6,7 +6,7 @@ import 'package:food_odering/src/widgets/custom_text.dart';
 import 'package:food_odering/src/widgets/small_floating_button.dart';
 
 class Details extends StatefulWidget {
-  final Product product;
+  final ProductModel product;
 
   Details({@required this.product});
 
@@ -29,10 +29,9 @@ class _DetailsState extends State<Details> {
                 children: [
                   Carousel(
                     images: [
-                      AssetImage('images/${widget.product.image}'),
-                      AssetImage('images/${widget.product.image}'),
-                      AssetImage('images/${widget.product.image}'),
-                      AssetImage('images/${widget.product.image}'),
+                      Image.network(widget.product.image),
+                      Image.network(widget.product.image),
+                      Image.network(widget.product.image)
                     ],
                     dotBgColor: white,
                     dotColor: grey,

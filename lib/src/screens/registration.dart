@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_odering/src/helpers/screen_navigation.dart';
 import 'package:food_odering/src/helpers/style.dart';
-import 'package:food_odering/src/providers/auth.dart';
+import 'package:food_odering/src/providers/user.dart';
 import 'package:food_odering/src/screens/home.dart';
 import 'package:food_odering/src/screens/login.dart';
 import 'package:food_odering/src/widgets/custom_text.dart';
@@ -19,7 +19,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       key: _key,
       backgroundColor: white,

@@ -10,7 +10,6 @@ class ShoppingBag extends StatefulWidget {
 }
 
 class _ShoppingBagState extends State<ShoppingBag> {
-  Product product = Product(name: "Cơm Chiên", price: 5.99, rating: 4.2, vendor: "GoodFoos", wishList: true, image: "com.png");
 
   @override
   Widget build(BuildContext context) {
@@ -62,50 +61,50 @@ class _ShoppingBagState extends State<ShoppingBag> {
       backgroundColor: white,
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              height: 140,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: white,
-                boxShadow: [
-                  BoxShadow(
-                   color: grey,
-                   offset: Offset(3,5),
-                   blurRadius: 20
-                  ),
-                ],
-              ),
-              child: Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      "images/${product.image}",
-                      height: 120,
-                      width: 120,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                            children: [
-                              TextSpan(text: product.name+ "\n", style: TextStyle(color: black, fontSize: 20, fontWeight: FontWeight.bold)),
-                              TextSpan(text: "\$"+product.price.toString()+ "\n", style: TextStyle(color: black, fontSize: 18)),
-                            ]
-                        ),),
-
-                      SizedBox(width: 80,),
-                      IconButton(icon: Icon(Icons.delete), onPressed: (){}),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(10.0),
+          //   child: Container(
+          //     height: 140,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(10),
+          //       color: white,
+          //       boxShadow: [
+          //         BoxShadow(
+          //          color: grey,
+          //          offset: Offset(3,5),
+          //          blurRadius: 20
+          //         ),
+          //       ],
+          //     ),
+          //     child: Row(
+          //       children: <Widget>[
+          //         ClipRRect(
+          //           borderRadius: BorderRadius.circular(10),
+          //           child: Image.asset(
+          //             "images/${product.image}",
+          //             height: 120,
+          //             width: 120,
+          //           ),
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             RichText(
+          //               text: TextSpan(
+          //                   children: [
+          //                     TextSpan(text: product.name+ "\n", style: TextStyle(color: black, fontSize: 20, fontWeight: FontWeight.bold)),
+          //                     TextSpan(text: "\$"+product.price.toString()+ "\n", style: TextStyle(color: black, fontSize: 18)),
+          //                   ]
+          //               ),),
+          //
+          //             SizedBox(width: 80,),
+          //             IconButton(icon: Icon(Icons.delete), onPressed: (){}),
+          //           ],
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

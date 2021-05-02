@@ -2,140 +2,150 @@ import 'package:flutter/material.dart';
 import 'package:food_odering/src/helpers/screen_navigation.dart';
 import 'package:food_odering/src/helpers/style.dart';
 import 'package:food_odering/src/models/product.dart';
+import 'package:food_odering/src/providers/product.dart';
+import 'package:food_odering/src/providers/user.dart';
 import 'package:food_odering/src/screens/details.dart';
 import 'package:food_odering/src/widgets/custom_text.dart';
+import 'package:food_odering/src/widgets/loading.dart';
+import 'package:provider/provider.dart';
 
-List<Product> productList = [
-  Product(name: "Cơm Chiên", price: 5.99, rating: 4.2, vendor: "GoodFoos", wishList: true, image: "com.png"),
-  Product(name: "Bò Xông Khói", price: 10.9, rating: 4.7, vendor: "GoodFoos", wishList: false, image: "bo.png"),
-  Product(name: "Mì Quảng", price: 1.9, rating: 4.8, vendor: "GoodFoos", wishList: true, image: "mi.png"),
-  Product(name: "Pizza", price: 7.0, rating: 3.2, vendor: "GoodFoos", wishList: true, image: "piza.png"),
-  Product(name: "Salad Cá", price: 9.0, rating: 4.0, vendor: "GoodFoos", wishList: false, image: "sala.png"),
-  Product(name: "Tôm Nướng", price: 4.3, rating: 4.9, vendor: "GoodFoos", wishList: false, image: "tom.png"),
+class Featured extends StatefulWidget {
+  @override
+  _FeaturedState createState() => _FeaturedState();
+}
 
-];
-
-class Featured extends StatelessWidget {
+class _FeaturedState extends State<Featured> {
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+    final user = Provider.of<UserProvider>(context);
+
+
     return Container(
-      height: 260,
+      height: 220,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: productList.length,
-        itemBuilder: (_, index){
-          return Padding(
-            padding: EdgeInsets.fromLTRB(12,14,16,12),
-            child: GestureDetector(
-              onTap: (){
-                changeScreen(_, Details(product: productList[index]));
-              },
-              child: Container(
-                height: 260,
-                width: 220,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: grey,
-                          offset: Offset(10,5),
-                          blurRadius: 4
-                      )
-                    ]
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset(
-                        "images/${productList[index].image}",
-                        height: 160,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: CustomText(text: productList[index].name,),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: grey,
-                                        offset: Offset(1,1),
-                                        blurRadius: 4
-                                    )
-                                  ]
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: productList[index].wishList ? Icon(
-                                  Icons.favorite,
-                                  color: red,
-                                  size: 18,
-                                ) : Icon(
-                                  Icons.favorite_border,
-                                  color: red,
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(height: 1,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Row(
+          scrollDirection: Axis.horizontal,
+          itemCount: productProvider.products.length,
+          itemBuilder: (_, index) {
+            return Padding(
+                padding: EdgeInsets.fromLTRB(12, 14, 16, 12),
+                child: GestureDetector(
+                  onTap: () {
+                    changeScreen(
+                        _,
+                        Details(
+                          product: productProvider.products[index],
+                        ));
+                  },
+                  child: Container(
+                    height: 220,
+                    width: 200,
+                    decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey[300],
+                              offset: Offset(-2, -1),
+                              blurRadius: 5),
+                        ]),
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
+                          child: Stack(
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: CustomText(
-                                  text: productList[index].rating.toString(),
-                                  color: grey,
-                                  size: 14,
-                                ),
-                              ),
-                              SizedBox(width: 2,),
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 16,),
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 16,),
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 16,),
-                              Icon(
-                                Icons.star,
-                                color: grey,
-                                size: 16,),
+                              Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Loading(),
+                                  )),
+                              Center(
+                                child: Image.network(productProvider.products[index].image, height: 126,),
+                              )
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: CustomText(text: "\$${productList[index].price}", weight: FontWeight.bold,),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CustomText(
+                                text: productProvider.products[index].name ??
+                                    "id null",
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: GestureDetector(
+                                onTap: (){
+//                                  setState(() {
+//                                    productProvider.products[index].liked = !productProvider.products[index].liked;
+//                                  });
+//                                  productProvider.likeDislikeProduct(userId: user.userModel.id, product: productProvider.products[index], liked: productProvider.products[index].liked);
+                                },
+                                child: Container(),
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: CustomText(
+                                    text: productProvider.products[index].rating
+                                        .toString(),
+                                    color: grey,
+                                    size: 14.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 2,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: red,
+                                  size: 16,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: red,
+                                  size: 16,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: red,
+                                  size: 16,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: grey,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: CustomText(
+                                text:
+                                "\$${productProvider.products[index].price / 100}",
+                                weight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          );
-        },
-
-      ),
+                ));
+          }),
     );
   }
 }
